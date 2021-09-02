@@ -1,0 +1,95 @@
+name: CI
+
+on: push
+
+jobs:
+
+  bundle-app:
+    name: Bundle App
+    needs: test-unit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - run: mkdir -p dist
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - run: |
+          make package
+      - uses: actions/upload-artifact@v2
+        with:
+          name: app_tgz
+          path: build/jellyfisher.tgz
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: app_dir
+          path: jellyfisher
+
+  slim-validate:
+    name: SLIM Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: app_dir
+          path: jellyfisher
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Slim Validate
+        run: slim validate jellyfisher
+
+  appinspect-cli:
+    needs: bundle-app
+    name: AppInspect CLI Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: app_tgz
+          path: jellyfisher.tgz
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.7"
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get install libxml2-dev libxslt1-dev
+          python -m pip install http://download.splunk.com/misc/appinspect/splunk-appinspect-latest.tar.gz
+      - name: Run AppInspect
+        run: |
+          splunk-appinspect inspect jellyfisher.tgz --output-file appinspect.json
+          exit `cat appinspect.json | jq '.summary.failure'`
+
+  appinspect-api:
+      name: AppInspect API Validation
+      needs: 
+        - appinspect-cli
+        - slim-validate
+      runs-on: ubuntu-latest
+      if: github.ref == 'refs/heads/main'
+      steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: app_tgz
+      - run: ls -a
+      - uses: splunk/appinspect-api-action@v2
+        with:
+          filePath: jellyfisher.tgz
+          splunkUser: ${{ secrets.SPLUNK_USER }}
+          splunkPassword: ${{ secrets.SPLUNK_PASS }}
+          includedTags: cloud
+          failOnError: true
+          failOnWarning: false

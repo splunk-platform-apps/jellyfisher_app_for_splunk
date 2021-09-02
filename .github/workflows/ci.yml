@@ -103,7 +103,7 @@ jobs:
           sleep 30
       - name: Run a multi-line script
         run: |
-          curl -k -u admin:password https://localhost:8089/services/apps/local
+          curl -k -u admin:password https://localhost:8089/services/apps/local/jellyfisher
 
       - name: Test Jellyfisher command
         run: |

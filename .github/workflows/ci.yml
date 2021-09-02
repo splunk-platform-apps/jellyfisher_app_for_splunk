@@ -6,7 +6,6 @@ jobs:
 
   bundle-app:
     name: Bundle App
-    needs: test-unit
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

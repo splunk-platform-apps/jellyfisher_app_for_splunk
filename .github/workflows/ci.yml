@@ -68,6 +68,40 @@ jobs:
           splunk-appinspect inspect jellyfisher.tgz --output-file appinspect.json
           exit `cat appinspect.json | jq '.summary.failure'`
 
+  splunk-test:
+    runs-on: ubuntu-latest
+    services:
+      splunk:
+        image: splunk/splunk
+        env:
+          SPLUNK_START_ARGS: --accept-license
+          SPLUNK_PASSWORD: password
+        options: >-
+          --health-interval 30s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 8000:8000
+          - 8089:8089
+        volumes:
+          - jellyfisher:/opt/splunk/etc/apps/jellyfisher
+
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: app_dir
+          path: jellyfisher
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          curl -k -u admin:password https://localhost:8089/services/apps/local
+
+
   appinspect-api:
       name: AppInspect API Validation
       needs: 

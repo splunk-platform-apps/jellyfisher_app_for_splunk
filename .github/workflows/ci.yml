@@ -106,9 +106,8 @@ jobs:
           curl -k -u admin:password https://localhost:8089/services/apps/local/jellyfisher
 
       - name: Test Jellyfisher command
-        run: |
-          curl -k -u admin:password https://localhost:8089/services/search/jobs/export -d search="|makeresults n=3 | eval x=\"asd\" | eval y=\"asf\" | jellyfisher levenshtein_distance(x,y)" -d output_mode=json
-          | jq -e '(.result.levenshtein_distance | contains("1"))'
+        run:
+          curl -k -u admin:password https://localhost:8089/services/search/jobs/export -d search="|makeresults n=3 | eval x=\"asd\" | eval y=\"asf\" | jellyfisher levenshtein_distance(x,y)" -d output_mode=json | jq -e '(.result.levenshtein_distance | contains("1"))'
 
 
 

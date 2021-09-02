@@ -97,13 +97,13 @@ jobs:
         run: echo Hello, world!
 
       # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          curl -k -u admin:password https://localhost:8089/services/apps/local
       - name: Restart instance
         run: |
           curl -k -u admin:password https://localhost:8089/services/server/control/restart -X POST
           sleep 30
+      - name: Run a multi-line script
+        run: |
+          curl -k -u admin:password https://localhost:8089/services/apps/local
 
       - name: Test Jellyfisher command
         run: |

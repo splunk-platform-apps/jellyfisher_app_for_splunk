@@ -83,14 +83,14 @@ jobs:
         ports:
           - 8000:8000
           - 8089:8089
-        volumes:
-          - ${{ github.workspace }}/jellyfisher:/opt/splunk/etc/apps/jellyfisher
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - run: docker cp jellyfisher ${{ job.services.splunk.id }}:/opt/splunk/etc/apps/jellyfisher
       - run: docker exec -i ${{ job.services.splunk.id }} ls -a /opt/splunk/etc/apps/jellyfisher
+      - run: docker exec -i ${{ job.services.splunk.id }} ls -a /opt/splunk/etc/apps
 
       # Runs a single command using the runners shell
       - name: Run a one-line script

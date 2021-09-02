@@ -3,10 +3,10 @@ DIR := ${CURDIR}
 .PHONY: package
 
 link:
-	ln -s $(DIR)/output/TA_Carousel_Signage $(SPLUNK_HOME)etc/apps/TA_Carousel_Signage
+	ln -s $(DIR)/jellyfisher $(SPLUNK_HOME)etc/apps/jellyfisher
 
 unlink:
-	rm -i $(SPLUNK_HOME)etc/apps/TA_Carousel_Signage
+	rm -i $(SPLUNK_HOME)etc/apps/jellyfisher
 
 package:
 	find . -name '*.pyc' -delete

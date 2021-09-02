@@ -100,8 +100,10 @@ jobs:
       - name: Run a multi-line script
         run: |
           curl -k -u admin:password https://localhost:8089/services/apps/local
-
-      - name: Test curl
+      - name: Restart instance
+        run: |
+          curl -k -u admin:password https://localhost:8089/services/server/control/restart -X POST
+      - name: Test Jellyfisher command
         run: |
           curl -k -u admin:password https://localhost:8089/services/search/jobs/export -d search="makeresults n=3 | eval x="asd" | eval y="asf" | jellyfisher levenshtein_distance(x,y)" -d output_mode=csv
 

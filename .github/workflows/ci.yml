@@ -87,10 +87,8 @@ jobs:
           - ${{ github.workspace }}/jellyfisher:/opt/splunk/etc/apps/jellyfisher
 
     steps:
-      - uses: actions/download-artifact@v2
-        with:
-          name: app_dir
-          path: jellyfisher
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - run: docker cp jellyfisher/ ${{ job.services.splunk.id }}:/opt/splunk/etc/apps/
 

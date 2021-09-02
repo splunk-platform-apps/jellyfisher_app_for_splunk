@@ -87,6 +87,8 @@ jobs:
           - ${{ github.workspace }}/jellyfisher:/opt/splunk/etc/apps/jellyfisher
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       # Runs a single command using the runners shell
       - name: Run a one-line script

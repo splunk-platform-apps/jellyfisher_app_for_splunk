@@ -84,7 +84,7 @@ jobs:
           - 8000:8000
           - 8089:8089
         volumes:
-          - jellyfisher:/opt/splunk/etc/apps/jellyfisher
+          - ${{ github.workspace }}/jellyfisher:/opt/splunk/etc/apps/jellyfisher
 
     steps:
       - uses: actions/download-artifact@v2

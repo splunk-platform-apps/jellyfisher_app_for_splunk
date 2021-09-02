@@ -51,8 +51,8 @@ jobs:
     steps:
       - uses: actions/download-artifact@v2
         with:
-          name: app_tgz
-          path: jellyfisher.tgz
+          name: app_dir
+          path: jellyfisher
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -65,7 +65,7 @@ jobs:
           python -m pip install http://download.splunk.com/misc/appinspect/splunk-appinspect-latest.tar.gz
       - name: Run AppInspect
         run: |
-          splunk-appinspect inspect jellyfisher.tgz --output-file appinspect.json
+          splunk-appinspect inspect jellyfisher --output-file appinspect.json
           exit `cat appinspect.json | jq '.summary.failure'`
 
   splunk-test:

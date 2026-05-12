@@ -68,15 +68,6 @@ jobs:
         run: |
           exit `cat appinspect_result.json | jq '.summary.failure'`
 
-      # - name: Install dependencies
-      #   run: |
-      #     sudo apt-get install libxml2-dev libxslt1-dev
-      #     python -m pip install http://download.splunk.com/misc/appinspect/splunk-appinspect-latest.tar.gz
-      # - name: Run AppInspect
-      #   run: |
-      #     splunk-appinspect inspect jellyfisher --output-file appinspect.json
-      #     exit `cat appinspect.json | jq '.summary.failure'`
-
   splunk-test:
     runs-on: ubuntu-latest
     services:
@@ -104,11 +95,6 @@ jobs:
       - run: docker exec -i ${{ job.services.splunk.id }} ls -a /opt/splunk/etc/apps/jellyfisher
       - run: docker exec -i ${{ job.services.splunk.id }} ls -a /opt/splunk/etc/apps
 
-      # - name: Restart instance
-      #   run: |
-      #     curl -k -u admin:password https://localhost:8089/services/server/control/restart -X POST
-      #     sleep 30
-
       - name: Restart instance and wait for Splunk to be up again
         run: |
           curl -k -u admin:password "https://localhost:8089/services/server/control/restart?output_mode=json" -X POST
@@ -133,7 +119,7 @@ jobs:
 
       - name: Print App Configuration
         run: |
-          curl -k -u admin:password https://localhost:8089/services/apps/local/jellyfisher
+          curl -k -u admin:password https://localhost:8089/services/apps/local/jellyfisher?output_mode=json
 
       - name: Test Jellyfisher command
         run:

@@ -9,20 +9,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
       - run: mkdir -p dist
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v6
         with:
           python-version: 3.9
       - run: |
           make package
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v6
         with:
           name: app_tgz
           path: build/jellyfisher.tgz
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v6
         with:
           name: app_dir
           path: jellyfisher
@@ -32,9 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v6
         with:
           python-version: 3.9
       - name: Install dependencies
@@ -49,15 +49,15 @@ jobs:
     name: AppInspect CLI Validation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v5
         with:
           name: app_dir
           path: jellyfisher
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v6
         with:
-          python-version: "3.7"
+          python-version: 3.9
 
       - name: Install dependencies
         run: |
@@ -74,7 +74,8 @@ jobs:
       splunk:
         image: splunk/splunk
         env:
-          SPLUNK_START_ARGS: --accept-license
+          SPLUNK_START_ARGS: --accept-license --answer-yes --no-prompt
+          SPLUNK_GENERAL_TERMS: --accept-sgt-current-at-splunk-com
           SPLUNK_PASSWORD: password
         options: >-
           --health-interval 30s
@@ -86,7 +87,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
 
       - name: Copy app to service container
         run: docker cp jellyfisher ${{ job.services.splunk.id }}:/opt/splunk/etc/apps/jellyfisher
@@ -111,17 +112,17 @@ jobs:
 
   appinspect-api:
       name: AppInspect API Validation
-      needs: 
+      needs:
         - appinspect-cli
         - slim-validate
       runs-on: ubuntu-latest
       if: github.ref == 'refs/heads/master'
       steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v5
         with:
           name: app_tgz
       - run: ls -a
-      - uses: splunk/appinspect-api-action@v2
+      - uses: splunk/appinspect-api-action@v2.10
         with:
           filePath: jellyfisher.tgz
           splunkUser: ${{ secrets.SPLUNK_USER }}

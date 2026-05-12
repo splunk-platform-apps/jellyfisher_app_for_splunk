@@ -59,14 +59,23 @@ jobs:
         with:
           python-version: 3.9
 
-      - name: Install dependencies
+      - uses: splunk/appinspect-cli-action@v2.12
+        with:
+          app_path: jellyfisher
+          included_tags: cloud
+
+      - name: Check AppInspect Results
         run: |
-          sudo apt-get install libxml2-dev libxslt1-dev
-          python -m pip install http://download.splunk.com/misc/appinspect/splunk-appinspect-latest.tar.gz
-      - name: Run AppInspect
-        run: |
-          splunk-appinspect inspect jellyfisher --output-file appinspect.json
-          exit `cat appinspect.json | jq '.summary.failure'`
+          exit `cat appinspect_result.json | jq '.summary.failure'`
+
+      # - name: Install dependencies
+      #   run: |
+      #     sudo apt-get install libxml2-dev libxslt1-dev
+      #     python -m pip install http://download.splunk.com/misc/appinspect/splunk-appinspect-latest.tar.gz
+      # - name: Run AppInspect
+      #   run: |
+      #     splunk-appinspect inspect jellyfisher --output-file appinspect.json
+      #     exit `cat appinspect.json | jq '.summary.failure'`
 
   splunk-test:
     runs-on: ubuntu-latest
@@ -95,10 +104,32 @@ jobs:
       - run: docker exec -i ${{ job.services.splunk.id }} ls -a /opt/splunk/etc/apps/jellyfisher
       - run: docker exec -i ${{ job.services.splunk.id }} ls -a /opt/splunk/etc/apps
 
-      - name: Restart instance
+      # - name: Restart instance
+      #   run: |
+      #     curl -k -u admin:password https://localhost:8089/services/server/control/restart -X POST
+      #     sleep 30
+
+      - name: Restart instance and wait for Splunk to be up again
         run: |
-          curl -k -u admin:password https://localhost:8089/services/server/control/restart -X POST
+          curl -k -u admin:password "https://localhost:8089/services/server/control/restart?output_mode=json" -X POST
+          echo ""
+          echo "Waiting for Splunk to restart..."
           sleep 30
+          for i in {1..60}; do
+            HTTP_CODE=$(curl -sk -o /dev/null -w "%{http_code}" \
+              -u "admin:password" \
+              "https://localhost:8089/services/server/info")
+            if [ "$HTTP_CODE" -eq 200 ]; then
+              echo "  ✅ Splunk is up and authenticated (attempt ${i})"
+              exit 0
+            fi
+
+            echo "  Attempt ${i}/60: HTTP ${HTTP_CODE} — waiting 5s..."
+            sleep 5
+          done
+
+          echo "❌ Splunk did not become ready"
+          exit 1
 
       - name: Print App Configuration
         run: |
@@ -118,15 +149,15 @@ jobs:
       runs-on: ubuntu-latest
       if: github.ref == 'refs/heads/master'
       steps:
-      - uses: actions/download-artifact@v5
-        with:
-          name: app_tgz
+      # - uses: actions/download-artifact@v5
+      #   with:
+      #     name: app_tgz
+      - uses: actions/checkout@v6
       - run: ls -a
-      - uses: splunk/appinspect-api-action@v2.10
+      - uses: splunk/appinspect-api-action@v3.0
         with:
-          filePath: jellyfisher.tgz
-          splunkUser: ${{ secrets.SPLUNK_USER }}
-          splunkPassword: ${{ secrets.SPLUNK_PASS }}
-          includedTags: cloud
-          failOnError: true
-          failOnWarning: false
+          # filePath: jellyfisher.tgz
+          app_path: jellyfisher
+          username: ${{ secrets.SPLUNK_USER }}
+          password: ${{ secrets.SPLUNK_PASS }}
+          included_tags: "cloud"

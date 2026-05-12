@@ -114,19 +114,9 @@ jobs:
           curl -k -u admin:password "https://localhost:8089/services/server/control/restart?output_mode=json" -X POST
           echo ""
           echo "Waiting for Splunk to restart..."
-          sleep 30
-          echo "Waiting for port 8089 to be available..."
+          sleep 90
           for i in {1..60}; do
-            if nc -z localhost 8089 2>/dev/null; then
-              echo "  Port 8089 is open (attempt ${i})"
-              break
-            fi
-            echo "  Attempt ${i}/60: port not open — waiting 5s..."
-            sleep 5
-          done
-          echo ""
-          for i in {1..60}; do
-            HTTP_CODE=$(curl -sk -o /dev/null -w "%{http_code}" \
+            HTTP_CODE=$(curl -sk --tlsv1.2 -o /dev/null -w "%{http_code}" \
               -u "admin:password" \
               "https://localhost:8089/services/server/info")
             if [ "$HTTP_CODE" -eq 200 ]; then

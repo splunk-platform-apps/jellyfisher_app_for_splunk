@@ -19,9 +19,32 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os
 import sys
 import re
+from os.path import dirname
 
 splunkhome = os.environ["SPLUNK_HOME"]
 sys.path.append(os.path.join(splunkhome, "etc", "apps", "jellyfisher", "lib"))
+
+bindir = os.path.dirname(os.path.realpath(os.path.dirname(__file__)))
+libdir = os.path.join(bindir, "lib")
+platform = sys.platform
+python_version = "".join(str(x) for x in sys.version_info[:2])
+
+if python_version == "39":
+	if platform.startswith("win"):
+		sys.path.append(os.path.join(libdir, "3rdparty/windows_x86_64/python39"))
+	if platform.startswith("linux"):
+		sys.path.append(os.path.join(libdir, "3rdparty/linux_x86_64/python39"))
+	if platform.startswith("darwin"):
+		sys.path.append(os.path.join(libdir, "3rdparty/darwin_x86_64/python39"))
+
+elif python_version == "313":
+	if platform.startswith("win"):
+		sys.path.append(os.path.join(libdir, "3rdparty/windows_x86_64/python313"))
+	if platform.startswith("linux"):
+		sys.path.append(os.path.join(libdir, "3rdparty/linux_x86_64/python313"))
+	if platform.startswith("darwin"):
+		sys.path.append(os.path.join(libdir, "3rdparty/darwin_x86_64/python313"))
+
 from splunklib.searchcommands import (
     dispatch,
     StreamingCommand,
@@ -39,8 +62,8 @@ class JellyfisherCommand(StreamingCommand):
     _distance_algorithms = [
         "levenshtein_distance",
         "damerau_levenshtein_distance",
-        "jaro_distance",
-        "jaro_winkler",
+        "jaro_similarity",
+        "jaro_winkler_similarity",
         "match_rating_comparison",
         "hamming_distance",
     ]
@@ -51,7 +74,6 @@ class JellyfisherCommand(StreamingCommand):
         "nysiis",
         "match_rating_codex",
         "metaphone",
-        "porter_stem",
     ]
 
     preg_t = re.compile("([^(]+)\(([^)]+)")
@@ -66,7 +88,7 @@ class JellyfisherCommand(StreamingCommand):
         ]  # [u'yolo', u'lookup:bheh']
         self._n_arguments = len(self._arguments)
         self.logger.debug("JellyfisherCommand: %s", self._arguments)  # logs command line
-        
+
         if self._algorithm in self._phonetic_algorithms and self._n_arguments != 1:
             raise ValueError("phonetic algorithms takes one argument as input")
 

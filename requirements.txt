@@ -1,3 +1,4 @@
 future>=0.18.3
 semantic-version==2.8.5
 splunk-packaging-toolkit==1.0.1
+splunk-add-on-ucc-framework==5.66.0

@@ -10,25 +10,45 @@ Ex:
 
 JellyFisher uses Chunked Protocol for custom search commands, meaning that decent performances should be achieved (but no testing were performed to confirm that or not).
 
-The supported algorithms are:
+## Supported algorithms
 
-**distance alogrithms:**
-- levenshtein_distance
-- damerau_levenshtein_distance
-- jaro_distance
-- jaro_winkler
-- match_rating_comparison
-- hamming_distance
+**Distance algorithms:**
+* Levenshtein Distance - `levenshtein_distance`
+* Damerau-Levenshtein Distance - `damerau_levenshtein_distance`
+* Jaro Distance - `jaro_similarity`
+* Jaro-Winkler Distance - `jaro_winkler_similarity`
+* Match Rating Approach Comparison - `match_rating_comparison`
+* Hamming Distance - `hamming_distance`
 
-**phonetic alogrithms:**
-- soundex
-- nysiis
-- match_rating_codex
-- metaphone
-- porter_stem
+**Phonetic algorithms:**
+* American Soundex - `soundex`
+* Metaphone - `metaphone`
+* NYSIIS (New York State Identification and Intelligence System) - `nysiis`
+* Match Rating Codex - `match_rating_codex`
+
+## ⚠️ v2.0 Breaking Changes
+
+Version `2.0.0` comes with a **major jellyfish library upgrade** (v0.8.2 → v1.2.1). By default the bundled algorithms  use **rust** instead of the **deprecated python** implementations, meaning the library has become platform and environment dependent [2].
+
+Please be aware of the following breaking changes.
+
+### Removed Functions
+
+`jellyfish.porter_stem()` has been removed in v1.2.1. If your code relies on this function, you will need to replace it with an alternative stemming library.
+
+### Renamed Functions
+
+The following functions have been renamed for clarity:
+
+| v0.8.2 (old)                | v1.2.1 (new)                          |
+|-----------------------------|---------------------------------------|
+| `jellyfish.jaro_distance()` | `jellyfish.jaro_similarity()`         |
+| `jellyfish.jaro_winkler()`  | `jellyfish.jaro_winkler_similarity()` |
 
 
-## Usage:
+Using the old function names will raise an `AttributeError` at runtime.
+
+## Usage
 
 The generic usage is straightforward:
 
@@ -40,7 +60,7 @@ Examples:
 
 ```
 ... | jellyfisher levensthein_distance(sourcetype,source)
-... | jellyfisher jaro_distance(user,sourcetype)
+... | jellyfisher jaro_similarity(user,sourcetype)
 ... | jellyfisher soundex(sourcetype)
 
 ```
@@ -51,8 +71,8 @@ Examples:
 The following search is given as demonstration purpose to load a bunch of words (process names) from a CSV lookup file and then compute their distances using the map() command. This is not the perfect implementation, but a good example to start from :)
 
 ```
-| inputlookup processNames.csv  
-| map search="search index=windows | head 10 | stats count by process | eval pName = $processName$ | jellyfisher levenshtein_distance($processName$, process)" 
+| inputlookup processNames.csv
+| map search="search index=windows | head 10 | stats count by process | eval pName = $processName$ | jellyfisher levenshtein_distance($processName$, process)"
 | table process, pName, levenshtein_distance
 ```
 
@@ -61,6 +81,7 @@ The following search is given as demonstration purpose to load a bunch of words 
 ## References
 
 [1] https://pypi.python.org/pypi/jellyfish
+[2] https://www.jpt.sh/projects/jellyfish/#implementations
 
 
 ## Credits

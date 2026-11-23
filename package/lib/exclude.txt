@@ -17,3 +17,6 @@ opentelemetry-semantic-conventions
 opentelemetry-exporter-otlp-common
 importlib-metadata
 zipp
+splunk-sdk
+deprecation
+packaging

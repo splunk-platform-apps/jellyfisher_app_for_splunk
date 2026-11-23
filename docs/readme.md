@@ -34,8 +34,17 @@ The command takes the algorithm and its fields as one argument, as in `jellyfish
 
 ### Requirements
 
-- Splunk Enterprise 9.3 or later, or Splunk Cloud with Python 3.9 or 3.13.
-- A platform that has a build of the jellyfish library: Linux x86_64, Windows x86_64, or macOS x86_64, with Python 3.9 or 3.13. The app declares `python.required = 3.9,3.13`.
+- A Splunk version that ships Python 3.13: Splunk Enterprise 10.6 or later, or Splunk Cloud 10.7 or later. The app declares `python.required = 3.13`. Splunk versions that only have Python 3.9, such as 9.x and 10.0, need the 2.1.x versions of the app.
+- A platform that has a build of the jellyfish library: Linux x86_64, Windows x86_64, or macOS x86_64.
+
+### Choosing a version
+
+| Version | jellyfish | Python | Splunk |
+| --- | --- | --- | --- |
+| 3.x | 1.3.0 | 3.13 | Splunk with Python 3.13: Enterprise 10.6 and later, Cloud 10.7 and later |
+| 2.1.x | 1.2.1 | 3.9 and 3.13 | Splunk Enterprise 9.3 or later, or Splunk Cloud, with Python 3.9 or 3.13 |
+
+Both give the same results. 3.x has the latest Splunk SDK and jellyfish, and 2.1.x runs where Splunk has no Python 3.13.
 
 ### Installation
 
@@ -59,12 +68,15 @@ The app ID is `jellyfisher`, as for the app on Splunkbase. Update the installed 
 | You have | What to do |
 | --- | --- |
 | JellyFisher 1.0.1 from Splunkbase | Update the app. Your searches keep working, including the ones that use `jaro_distance`, `jaro_winkler`, and `porter_stem`. |
+| JellyFisher 2.1.x | Update to 3.x when your Splunk version has Python 3.13. The results do not change. |
 | JellyFisher 2.0.0 | Update the app. The results of `metaphone`, `match_rating_codex`, and `match_rating_comparison` change for the values listed in [Compatibility](#compatibility). |
 | A private copy with another app ID, such as `jellyfisher_app`, `jellyfisher_cloud`, or `rj_jellyfisher` | Uninstall the private copy, then install this app. A private copy does not update, and two apps that define the `jellyfisher` command conflict. |
 
 ### Compatibility
 
-Searches that use the names of 1.0.1 return the same results as in 1.0.1. The app uses the code of jellyfish 0.8.2, the library of 1.0.1, for `jaro_distance`, `jaro_winkler`, `metaphone`, `match_rating_codex`, `match_rating_comparison`, and `porter_stem`, and jellyfish 1.2.1 for the other algorithms. In a test of 2,546,672 calls (all 235,976 words of an English word list, and 195,256 pairs of words with typos, short strings, and values with digits and punctuation), every algorithm of 1.0.1 returned exactly the same value as 1.0.1.
+Searches that use the names of 1.0.1 return the same results as in 1.0.1. The app uses the code of jellyfish 0.8.2, the library of 1.0.1, for `jaro_distance`, `jaro_winkler`, `metaphone`, `match_rating_codex`, `match_rating_comparison`, and `porter_stem`, and jellyfish 1.3.0 for the other algorithms. In a test of 2,546,672 calls (all 235,976 words of an English word list, and 195,256 pairs of words with typos, short strings, and values with digits and punctuation), every algorithm of 1.0.1 returned exactly the same value as 1.0.1.
+
+The results are also the same as those of 2.1.x, which uses jellyfish 1.2.1 (2,741,928 calls).
 
 Compared with 2.0.0, which used jellyfish 1.2.1 for everything:
 
@@ -124,13 +136,11 @@ The [Tests workflow](../.github/workflows/tests.yml) runs both unit and smoke te
 
 | Splunk Enterprise | Python used | Tested |
 | --- | --- | --- |
-| 9.3.0 | 3.9 | Yes |
-| 10.0.1 | 3.9 | Yes |
 | 10.6.1.1 | 3.13 | Yes |
 
-Each version was tested with a new install, and with an update from 1.0.1 that keeps the files in `local`. The searches written for 1.0.1 return the same results after the update.
+The app was tested with a new install, and with an update from 1.0.1 that keeps the files in `local`. The searches written for 1.0.1 return the same results after the update.
 
-The table above lists the Splunk Enterprise versions tested; it does not list Splunk Cloud stack versions. Splunk Cloud is supported when the stack provides Python 3.9 or 3.13, but Cloud upgrade testing for this release is pending.
+The table lists the Enterprise version tested with 3.0.0. Fresh install and upgrade testing on Splunk Cloud 10.7 is pending.
 
 ## Credits & Acknowledgements
 

@@ -2,7 +2,7 @@
     "meta": {
         "name": "jellyfisher",
         "restRoot": "jellyfisher",
-        "version": "2.1.0",
+        "version": "3.0.0",
         "displayName": "JellyFisher",
         "schemaVersion": "0.0.10",
         "supportedThemes": [
@@ -12,16 +12,7 @@
         "os-dependentLibraries": [
             {
                 "name": "jellyfish",
-                "version": "1.2.1",
-                "platform": "win_amd64",
-                "python_version": "39",
-                "target": "3rdparty/windows_x86_64/python39",
-                "dependencies": true,
-                "os": "windows"
-            },
-            {
-                "name": "jellyfish",
-                "version": "1.2.1",
+                "version": "1.3.0",
                 "platform": "win_amd64",
                 "python_version": "313",
                 "target": "3rdparty/windows_x86_64/python313",
@@ -30,16 +21,7 @@
             },
             {
                 "name": "jellyfish",
-                "version": "1.2.1",
-                "platform": "manylinux2014_x86_64",
-                "python_version": "39",
-                "target": "3rdparty/linux_x86_64/python39",
-                "dependencies": true,
-                "os": "linux"
-            },
-            {
-                "name": "jellyfish",
-                "version": "1.2.1",
+                "version": "1.3.0",
                 "platform": "manylinux2014_x86_64",
                 "python_version": "313",
                 "target": "3rdparty/linux_x86_64/python313",
@@ -48,16 +30,34 @@
             },
             {
                 "name": "jellyfish",
-                "version": "1.2.1",
+                "version": "1.3.0",
                 "platform": "macosx_10_12_x86_64",
-                "python_version": "39",
-                "target": "3rdparty/darwin_x86_64/python39",
+                "python_version": "313",
+                "target": "3rdparty/darwin_x86_64/python313",
                 "dependencies": true,
                 "os": "darwin"
             },
             {
-                "name": "jellyfish",
-                "version": "1.2.1",
+                "name": "splunk-sdk",
+                "version": "3.0.1",
+                "platform": "win_amd64",
+                "python_version": "313",
+                "target": "3rdparty/windows_x86_64/python313",
+                "dependencies": true,
+                "os": "windows"
+            },
+            {
+                "name": "splunk-sdk",
+                "version": "3.0.1",
+                "platform": "manylinux2014_x86_64",
+                "python_version": "313",
+                "target": "3rdparty/linux_x86_64/python313",
+                "dependencies": true,
+                "os": "linux"
+            },
+            {
+                "name": "splunk-sdk",
+                "version": "3.0.1",
                 "platform": "macosx_10_12_x86_64",
                 "python_version": "313",
                 "target": "3rdparty/darwin_x86_64/python313",

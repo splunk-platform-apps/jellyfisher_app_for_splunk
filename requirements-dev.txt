@@ -1,0 +1,4 @@
+jellyfish==1.2.1
+pytest
+ruff
+splunk-sdk==2.1.1

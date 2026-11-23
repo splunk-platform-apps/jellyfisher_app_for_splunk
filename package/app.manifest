@@ -1,0 +1,57 @@
+{
+    "schemaVersion": "2.0.0",
+    "info": {
+        "title": "JellyFisher",
+        "id": {
+            "group": null,
+            "name": "jellyfisher",
+            "version": "2.1.0"
+        },
+        "author": [
+            {
+                "name": "Cedric Le Roux, fdse@splunk.com",
+                "email": null,
+                "company": null
+            }
+        ],
+        "releaseDate": null,
+        "description": "Search command that wraps the jellyfish library: compute the distance between two fields (Levenshtein, Jaro, Hamming and others) or the phonetic encoding of a field (Soundex, Metaphone, NYSIIS and others).",
+        "classification": {
+            "intendedAudience": "IT Professionals",
+            "categories": [
+                "Security, Fraud & Compliance"
+            ],
+            "developmentStatus": "Production/Stable"
+        },
+        "commonInformationModels": null,
+        "license": {
+            "name": "LICENSE.txt",
+            "text": "./LICENSES/LICENSE.txt",
+            "uri": "https://github.com/splunk-platform-apps/jellyfisher_app_for_splunk/blob/main/LICENSE"
+        },
+        "privacyPolicy": {
+            "name": null,
+            "text": null,
+            "uri": null
+        },
+        "releaseNotes": {
+            "name": null,
+            "text": null,
+            "uri": "https://github.com/splunk-platform-apps/jellyfisher_app_for_splunk/releases"
+        }
+    },
+    "dependencies": null,
+    "tasks": null,
+    "inputGroups": null,
+    "incompatibleApps": null,
+    "platformRequirements": null,
+    "supportedDeployments": [
+        "_standalone",
+        "_distributed",
+        "_search_head_clustering"
+    ],
+    "targetWorkloads": [
+        "_search_heads",
+        "_indexers"
+    ]
+}

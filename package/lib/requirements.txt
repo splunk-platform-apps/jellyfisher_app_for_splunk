@@ -1,2 +1,4 @@
+# ucc-gen requires splunktaucclib in every add-on, even one without a user interface. JellyFisher does not
+# use it, so lib/exclude.txt removes its dependencies.
 splunktaucclib>=8.2.0
 splunk-sdk==2.1.1

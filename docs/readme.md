@@ -1,14 +1,16 @@
 # JellyFisher App for Splunk
 
-JellyFisher is a Splunk custom search command, `jellyfisher`, that uses the [jellyfish](https://pypi.org/project/jellyfish/) Python library [1]. It computes a distance between two fields, or a phonetic encoding of one field. It is a search-time app with no user interface.
+This app provides a Splunk custom search command, `jellyfisher`, that uses the [jellyfish](https://pypi.org/project/jellyfish/) Python library. It computes a distance between two fields, or a phonetic encoding of one field; for example, the Levenshtein distance between "kitten" and "sitting" is 3, and the Soundex code of both "Robert" and "Rupert" is `R163`.
 
-For example, the Levenshtein distance between "kitten" and "sitting" is 3, and the Soundex code of both "Robert" and "Rupert" is `R163`. Typical uses are detections that look for values that are close to a known one, such as a process name that is one character away from `svchost.exe`, or a domain that imitates another one.
+It is a search-time app with no user interface.
+
+👉 Typical use cases include detecting values that are close to a known one, such as a process name one character away from `svchost.exe`, or a domain that imitates another one.
 
 ## Features
 
 - Computes the distance between two fields with six algorithms, and encodes one field with five phonetic or stemming algorithms.
 - Runs as a chunked (SCP v2) command, so events are processed in batches.
-- Works with the names that 1.0.1 used, see [Upgrading](#upgrading).
+- Works with the algorithm names used by JellyFisher 1.0.1; see [Upgrading](#upgrading).
 
 ### Algorithms
 
@@ -30,16 +32,17 @@ The command takes the algorithm and its fields as one argument, as in `jellyfish
 
 ## Getting Started
 
-> Compute string distances and phonetic codes in a search.
-
 ### Requirements
 
-- Splunk Enterprise 9.3 or later, or Splunk Cloud.
+- Splunk Enterprise 9.3 or later, or Splunk Cloud with Python 3.9 or 3.13.
 - A platform that has a build of the jellyfish library: Linux x86_64, Windows x86_64, or macOS x86_64, with Python 3.9 or 3.13. The app declares `python.required = 3.9,3.13`.
 
 ### Installation
 
-Install the app from [Splunkbase](https://splunkbase.splunk.com/app/3626) on the search heads. In a distributed deployment, the app replicates its `lib` folder to the indexers with the knowledge bundle (see `default/distsearch.conf`), because the command can also run on them. In Splunk Cloud, install it from Splunkbase with the app browser or with ACS.
+Install the app from [Splunkbase](https://splunkbase.splunk.com/app/3626) on Splunk **search heads**. In Splunk Cloud, install it from Splunkbase with the app browser or ACS.
+
+> [!IMPORTANT]
+> In a distributed deployment, the app replicates its `lib` folder to the indexers with the knowledge bundle (see `package/default/distsearch.conf`), because the command can also run on them.
 
 ### Usage
 
@@ -56,7 +59,7 @@ The app ID is `jellyfisher`, as for the app on Splunkbase. Update the installed 
 | You have | What to do |
 | --- | --- |
 | JellyFisher 1.0.1 from Splunkbase | Update the app. Your searches keep working, including the ones that use `jaro_distance`, `jaro_winkler`, and `porter_stem`. |
-| JellyFisher 2.0.0 from GitHub | Update the app. The results of `metaphone`, `match_rating_codex`, and `match_rating_comparison` change for the values listed in [Compatibility](#compatibility). |
+| JellyFisher 2.0.0 | Update the app. The results of `metaphone`, `match_rating_codex`, and `match_rating_comparison` change for the values listed in [Compatibility](#compatibility). |
 | A private copy with another app ID, such as `jellyfisher_app`, `jellyfisher_cloud`, or `rj_jellyfisher` | Uninstall the private copy, then install this app. A private copy does not update, and two apps that define the `jellyfisher` command conflict. |
 
 ### Compatibility
@@ -112,7 +115,7 @@ python -m pytest tests
 
 `tests/splunk_smoke.sh` runs one search per algorithm on a Splunk instance that has the app installed. The `Tests` workflow runs both on every pull request.
 
-## Versions Supported
+## Versions Tested
 
 | Splunk Enterprise | Python used | Tested |
 | --- | --- | --- |
@@ -122,16 +125,13 @@ python -m pytest tests
 
 Each version was tested with a new install, and with an update from 1.0.1 that keeps the files in `local`. The searches written for 1.0.1 return the same results after the update.
 
+Splunk Cloud is supported when the stack provides Python 3.9 or 3.13. Cloud upgrade testing for this release is pending.
+
 ## Credits & Acknowledgements
 
 - Cedric Le Roux, author of the app.
-- Erica Pescio, who ported the app to jellyfish 1.2.1 and Python 3.13.
 - The [jellyfish](https://github.com/jamesturk/jellyfish) library by James Turk.
 - The icon was made by [Freepik](https://www.freepik.com) from [www.flaticon.com](https://www.flaticon.com/).
-
-## References
-
-[1] https://pypi.org/project/jellyfish/
 
 ## Contributing
 See the [CONTRIBUTING.md](https://github.com/splunk-platform-apps/.github/blob/main/.github/CONTRIBUTING.md) file for details.

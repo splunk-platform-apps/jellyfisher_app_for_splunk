@@ -1,4 +1,4 @@
-# JellyFisher
+# JellyFisher App for Splunk
 
 JellyFisher is a Splunk custom search command, `jellyfisher`, that uses the [jellyfish](https://pypi.org/project/jellyfish/) Python library [1]. It computes a distance between two fields, or a phonetic encoding of one field. It is a search-time app with no user interface.
 

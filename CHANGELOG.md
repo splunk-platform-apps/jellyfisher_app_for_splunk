@@ -7,10 +7,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [3.0.0] - 2026-11-23
 
 ### Changed
-- jellyfish 1.3.0 and Splunk SDK 3.0.1, which need Python 3.13. The app declares `python.required = 3.13` and runs on Splunk versions that ship Python 3.13: Splunk Enterprise 10.6 and later, and Splunk Cloud 10.7 and later. Use 2.1.x on Splunk versions that only have Python 3.9.
+- Updated to jellyfish 1.3.0 and Splunk SDK 3.0.1. The SDK requires Python 3.13. The app declares `python.required = 3.13` and runs on Splunk versions that ship Python 3.13: Splunk Enterprise 10.6 and later, and Splunk Cloud 10.7 and later. Use 2.1.x on Splunk versions that only have Python 3.9.
 - The Splunk SDK is built for each platform, like jellyfish, so that the pipeline gives the same app on every Python version of its build matrix.
 - The results are the same as in 2.1.0 and in 1.0.1, in a test of 2,741,928 and 2,546,672 calls.
-- Tested on Splunk Enterprise 10.6.1.1 (Python 3.13), with a new install and with an update from 1.0.1 that keeps the files in `local`.
+- Tested on Splunk Enterprise 10.6.1.1 (Python 3.13), with a new install and with updates from 1.0.1, 2.0.0 and 2.1.0 that keep the files in `local`.
+- On Splunk versions without Python 3.13 (Splunk Enterprise 9.x and 10.0 were tested), the app installs, but the command returns no results and no error message. Install 2.1.x there.
 
 ### Removed
 - Python 3.9, which jellyfish 1.3.0 and Splunk SDK 3.0.1 do not support.

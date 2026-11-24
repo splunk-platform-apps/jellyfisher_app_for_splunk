@@ -37,6 +37,9 @@ The command takes the algorithm and its fields as one argument, as in `jellyfish
 - A Splunk version that ships Python 3.13: Splunk Enterprise 10.6 or later, or Splunk Cloud 10.7 or later. The app declares `python.required = 3.13`. Splunk versions that only have Python 3.9, such as 9.x and 10.0, need the 2.1.x versions of the app.
 - A platform that has a build of the jellyfish library: Linux x86_64, Windows x86_64, or macOS x86_64.
 
+> [!WARNING]
+> On tested Splunk versions without Python 3.13, 3.x installed and showed as enabled, but the `jellyfisher` command returned no results and no error message. Use 2.1.x on those versions.
+
 ### Choosing a version
 
 | Version | jellyfish | Python | Splunk |
@@ -90,6 +93,7 @@ Compared with 2.0.0, which used jellyfish 1.2.1 for everything:
 - `<name> is not a valid algorithm`: the algorithm name has a typo, or the name is not in the [table](#algorithms).
 - `distance algorithms takes two arguments as input` and `phonetic algorithms takes one argument as input`: the number of fields does not fit the algorithm.
 - `No module named 'jellyfish'` or an error about `_rustyfish`: the platform or the Python version has no build of the jellyfish library. See [Requirements](#requirements).
+- The command returns no results and no error, with 3.x: the Splunk version has no Python 3.13. Use 2.1.x, see [Choosing a version](#choosing-a-version).
 - To see more, open the job inspector of the search and check `search.log`.
 
 ## Examples
@@ -122,7 +126,7 @@ The lookup `processNames.csv` of the app holds a few process names. This search 
 To run the unit tests locally:
 
 ```bash
-uv venv .venv
+uv venv --python 3.13 .venv
 source .venv/bin/activate
 uv pip install -r tests/test-requirements.txt
 python -m pytest tests
@@ -130,7 +134,7 @@ python -m pytest tests
 
 To run one search per algorithm against a Splunk instance with the app installed, run `tests/splunk_smoke.sh`.
 
-The [Tests workflow](../.github/workflows/tests.yml) runs both unit and smoke tests on every pull request.
+The [Tests workflow](../.github/workflows/tests.yml) runs the Python 3.13 unit tests and the Splunk smoke tests on pull requests that change the app package, build configuration, or tests.
 
 ## Versions Tested
 

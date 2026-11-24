@@ -104,7 +104,7 @@ The lookup `processNames.csv` of the app holds a few process names. This search 
 
 ## Tests
 
-Create a virtual environment, install `requirements-dev.txt`, and run the unit tests:
+Create a virtual environment, install `tests/test-requirements.txt`, and run the unit tests:
 
 ```
 python -m pytest tests

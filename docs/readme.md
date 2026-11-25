@@ -130,7 +130,7 @@ The [Tests workflow](../.github/workflows/tests.yml) runs both unit and smoke te
 
 Each version was tested with a new install, and with an update from 1.0.1 that keeps the files in `local`. The searches written for 1.0.1 return the same results after the update.
 
-Splunk Cloud is supported when the stack provides Python 3.9 or 3.13. Cloud upgrade testing for this release is pending.
+The table above lists the Splunk Enterprise versions tested; it does not list Splunk Cloud stack versions. Splunk Cloud is supported when the stack provides Python 3.9 or 3.13, but Cloud upgrade testing for this release is pending.
 
 ## Credits & Acknowledgements
 

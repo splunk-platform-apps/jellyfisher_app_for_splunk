@@ -1,6 +1,6 @@
 Third-party software bundled with JellyFisher
 
-1. jellyfish 1.2.1 (built per platform into lib/3rdparty), MIT license
+1. jellyfish 1.3.0 (built per platform into lib/3rdparty), MIT license
    https://github.com/jamesturk/jellyfish
 
 MIT License
@@ -27,5 +27,5 @@ SOFTWARE.
 
 2. legacy.py and porter_stemmer.py (bin/), taken from the jellyfish 0.8.2 package (jellyfish/_jellyfish.py and jellyfish/porter.py), MIT license, same text and copyright as above
 
-3. splunk-sdk 2.1.1 (splunklib, installed into lib/ at build time), Apache License 2.0
+3. splunk-sdk 3.0.1 (splunklib, built into lib/3rdparty at build time), Apache License 2.0
    https://github.com/splunk/splunk-sdk-python, Copyright Splunk Inc.

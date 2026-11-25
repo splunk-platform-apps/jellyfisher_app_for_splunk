@@ -20,11 +20,11 @@ concurrency:
 jobs:
   unittest:
     name: Unit tests on Python ${{ matrix.python-version }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9", "3.13"]
+        python-version: ["3.13"]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -37,15 +37,13 @@ jobs:
 
   splunk-test:
     name: Command on Splunk ${{ matrix.version }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs: unittest
     strategy:
       fail-fast: false
       matrix:
         version:
           - 10.6.1.1 # renovate: datasource=docker depName=splunk/splunk
-          - 10.0.1 # renovate: datasource=docker depName=splunk/splunk
-          - 9.3.0 # renovate: datasource=docker depName=splunk/splunk
     env:
       SPLUNK_HOST: https://localhost:8089
       SPLUNK_USER: admin

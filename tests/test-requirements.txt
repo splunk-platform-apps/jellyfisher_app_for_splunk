@@ -1,4 +1,4 @@
-jellyfish==1.2.1
+jellyfish==1.3.0
 pytest
 ruff
-splunk-sdk==2.1.1
+splunk-sdk==3.0.1

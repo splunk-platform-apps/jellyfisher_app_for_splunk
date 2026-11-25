@@ -1,4 +1,5 @@
 # ucc-gen requires splunktaucclib in every add-on, even one without a user interface. JellyFisher does not
 # use it, so lib/exclude.txt removes its dependencies.
 splunktaucclib>=8.2.0
-splunk-sdk==2.1.1
+# splunk-sdk is not listed here. The pipeline builds on Python 3.9 and 3.13, and splunk-sdk 3.0.1 needs 3.13,
+# so globalConfig.json builds it for Python 3.13 together with jellyfish, and both builds give the same app.

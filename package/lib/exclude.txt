@@ -1,0 +1,19 @@
+# splunktaucclib is only here because ucc-gen requires it, the app does not import it or its dependencies
+solnlib
+sortedcontainers
+defusedxml
+PySocks
+urllib3
+typing_extensions
+grpcio
+protobuf
+googleapis-common-protos
+opentelemetry-api
+opentelemetry-sdk
+opentelemetry-exporter-otlp-proto-common
+opentelemetry-exporter-otlp-proto-grpc
+opentelemetry-proto
+opentelemetry-semantic-conventions
+opentelemetry-exporter-otlp-common
+importlib-metadata
+zipp

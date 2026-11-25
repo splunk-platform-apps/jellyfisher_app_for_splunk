@@ -1,11 +1,10 @@
 {
-    "pages": {},
     "meta": {
         "name": "jellyfisher",
         "restRoot": "jellyfisher",
-        "version": "2.0.0",
-        "displayName": "Jellyfisher",
-        "schemaVersion": "0.0.9",
+        "version": "2.1.0",
+        "displayName": "JellyFisher",
+        "schemaVersion": "0.0.10",
         "supportedThemes": [
             "light",
             "dark"

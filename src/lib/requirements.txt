@@ -1,4 +1,0 @@
-splunktaucclib
-splunk-sdk
-solnlib
-jellyfish==1.2.1

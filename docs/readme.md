@@ -107,13 +107,18 @@ The lookup `processNames.csv` of the app holds a few process names. This search 
 
 ## Tests
 
-Create a virtual environment, install `tests/test-requirements.txt`, and run the unit tests:
+To run the unit tests locally:
 
-```
+```bash
+uv venv .venv
+source .venv/bin/activate
+uv pip install -r tests/test-requirements.txt
 python -m pytest tests
 ```
 
-`tests/splunk_smoke.sh` runs one search per algorithm on a Splunk instance that has the app installed. The `Tests` workflow runs both on every pull request.
+To run one search per algorithm against a Splunk instance with the app installed, run `tests/splunk_smoke.sh`.
+
+The [Tests workflow](../.github/workflows/tests.yml) runs both unit and smoke tests on every pull request.
 
 ## Versions Tested
 
